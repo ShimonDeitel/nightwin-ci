@@ -32,7 +32,8 @@ final class NightwinUITests: XCTestCase {
 
     func testHomeShowsConstellationOnLaunch() throws {
         let app = launchApp()
-        XCTAssertTrue(app.otherElements["constellationView"].waitForExistence(timeout: 12), "Constellation did not appear on launch")
+        let constellation = app.descendants(matching: .any).matching(identifier: "constellationView").firstMatch
+        XCTAssertTrue(constellation.waitForExistence(timeout: 12), "Constellation did not appear on launch")
     }
 
     func testSeedWinsAppear() throws {

@@ -47,7 +47,7 @@ struct NightwinHomeView: View {
             .sheet(item: $activeSheet) { sheet in
                 switch sheet {
                 case .logWin:
-                    LogWinFormView()
+                    LogWinFormView(initialText: store.todayEntry?.text ?? "")
                 case .paywall:
                     PaywallView()
                 }

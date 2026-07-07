@@ -18,8 +18,8 @@ struct LogWinFormView: View {
 
     @State private var text: String
 
-    init() {
-        _text = State(initialValue: "")
+    init(initialText: String) {
+        _text = State(initialValue: initialText)
     }
 
     var body: some View {
@@ -49,11 +49,6 @@ struct LogWinFormView: View {
                     .buttonStyle(.plain)
                     .disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                     .accessibilityIdentifier("saveWinButton")
-                }
-            }
-            .onAppear {
-                if let today = store.todayEntry {
-                    text = today.text
                 }
             }
         }

@@ -50,11 +50,17 @@ final class NightwinUITests: XCTestCase {
         let textField = app.textViews["winTextField"].exists ? app.textViews["winTextField"] : app.textFields["winTextField"]
         XCTAssertTrue(textField.waitForExistence(timeout: 12))
         textField.tap()
-        // Today's entry may already be pre-filled (seed data), so clear any
-        // existing text before typing rather than appending to it.
+        // Today's entry may already be pre-filled (seed data). Backspacing by
+        // character count is unreliable on a multi-line (axis: .vertical)
+        // field since tap doesn't guarantee cursor is at the end — select
+        // all first so the replacement is deterministic regardless of
+        // cursor position.
         if let existing = textField.value as? String, !existing.isEmpty {
-            let deleteString = String(repeating: XCUIKeyboardKey.delete.rawValue, count: existing.count)
-            textField.typeText(deleteString)
+            textField.press(forDuration: 1.0)
+            if app.menuItems["Select All"].waitForExistence(timeout: 3) {
+                app.menuItems["Select All"].tap()
+            }
+            textField.typeText(XCUIKeyboardKey.delete.rawValue)
         }
         textField.typeText("Cooked a real dinner")
 
